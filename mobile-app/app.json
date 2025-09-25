@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Manage - Personal Dashboard",
-    "slug": "manage-dashboard",
+    "name": "Meraki - Productivity Companion",
+    "slug": "meraki-companion",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -9,24 +9,24 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#3b82f6"
+      "backgroundColor": "#667eea"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.manage.dashboard",
+      "bundleIdentifier": "com.meraki.companion",
       "associatedDomains": [
-        "applinks:manage-dashboard.com"
+        "applinks:meraki-app.com"
       ]
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#3b82f6"
+        "backgroundColor": "#667eea"
       },
-      "package": "com.manage.dashboard",
+      "package": "com.meraki.companion",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -34,7 +34,7 @@
           "data": [
             {
               "scheme": "https",
-              "host": "manage-dashboard.com"
+              "host": "meraki-app.com"
             }
           ],
           "category": [
@@ -48,7 +48,7 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "scheme": "manageapp",
+    "scheme": "merakiapp",
     "plugins": [
       "expo-linking"
     ]

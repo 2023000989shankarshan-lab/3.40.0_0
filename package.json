@@ -1,5 +1,5 @@
 {
-  "name": "manage-extension",
+  "name": "meraki-extension",
   "private": true,
   "version": "1.0.0",
   "type": "module",

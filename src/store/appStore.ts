@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User } from 'firebase/auth';
-import { Task, Note, UserPreferences, SubTask } from '../types';
-import { storageService } from '../services/storageService';
+import { Record, Task, Note, UserPreferences } from '../types';
+import { recordService } from '../services/recordService';
 import { authService } from '../services/authService';
 
 interface AppState {
@@ -20,12 +20,9 @@ interface AppState {
   // User preferences
   preferences: UserPreferences;
   
-  // Tasks
-  tasks: Task[];
+  // Records (tasks, notes, bookmarks)
+  records: Record[];
   tasksLoading: boolean;
-  
-  // Notes
-  notes: Note[];
   notesLoading: boolean;
   
   // UI state
@@ -39,21 +36,15 @@ interface AppState {
   // Actions
   setPreferences: (preferences: Partial<UserPreferences>) => void;
   
-  // Task actions
+  // Record actions
+  loadRecords: () => Promise<void>;
   loadTasks: () => Promise<void>;
-  addTask: (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
-  updateTask: (taskId: string, updates: Partial<Task>) => Promise<void>;
-  deleteTask: (taskId: string) => Promise<void>;
-  toggleTask: (taskId: string) => Promise<void>;
-  addSubTask: (taskId: string, subtask: Omit<SubTask, 'id' | 'createdAt'>) => Promise<void>;
-  toggleSubTask: (taskId: string, subtaskId: string) => Promise<void>;
-  
-  // Note actions
   loadNotes: () => Promise<void>;
-  addNote: (note: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
-  updateNote: (noteId: string, updates: Partial<Note>) => Promise<void>;
-  deleteNote: (noteId: string) => Promise<void>;
-  getNotesByUrl: (url: string) => Note[];
+  
+  // Computed getters
+  tasks: Task[];
+  notes: Note[];
+  bookmarks: Record[];
   
   // UI actions
   setShowPopup: (show: boolean) => void;
@@ -128,15 +119,24 @@ export const useAppStore = create<AppState>()(
       // User preferences
       preferences: {
         theme: 'system',
-        dashboardLayout: {
-          showTasks: true,
-          showNotes: true,
-          showAISuggestions: true
+        defaultView: 'dashboard',
+        autoCapture: {
+          youtube: true,
+          shopping: true,
+          booking: true
+        },
+        notifications: {
+          reminders: true,
+          sync: true,
+          daily: false
+        },
+        privacy: {
+          analytics: false,
+          crashReports: true
         }
       },
-      tasks: [],
+      records: [],
       tasksLoading: false,
-      notes: [],
       notesLoading: false,
       showPopup: false,
       currentPageContext: null,
@@ -145,135 +145,52 @@ export const useAppStore = create<AppState>()(
       setPreferences: (newPreferences) => {
         const updatedPreferences = { ...get().preferences, ...newPreferences };
         set({ preferences: updatedPreferences });
-        storageService.savePreferences(updatedPreferences);
+        // TODO: Save to storage service
       },
 
-      // Task management
+      // Record management
+      loadRecords: async () => {
+        try {
+          const records = await recordService.getRecords();
+          set({ records });
+        } catch (error) {
+          console.error('Failed to load records:', error);
+        }
+      },
+
       loadTasks: async () => {
         set({ tasksLoading: true });
         try {
-          const tasks = await storageService.getTasks();
-          set({ tasks, tasksLoading: false });
+          const records = await recordService.getRecords();
+          set({ records, tasksLoading: false });
         } catch (error) {
           console.error('Failed to load tasks:', error);
           set({ tasksLoading: false });
         }
       },
 
-      addTask: async (taskData) => {
-        try {
-          const newTask = await storageService.addTask(taskData);
-          set(state => ({ tasks: [...state.tasks, newTask] }));
-        } catch (error) {
-          console.error('Failed to add task:', error);
-          throw error;
-        }
-      },
-
-      updateTask: async (taskId, updates) => {
-        try {
-          await storageService.updateTask(taskId, updates);
-          set(state => ({
-            tasks: state.tasks.map(task =>
-              task.id === taskId ? { ...task, ...updates, updatedAt: new Date().toISOString() } : task
-            )
-          }));
-        } catch (error) {
-          console.error('Failed to update task:', error);
-          throw error;
-        }
-      },
-
-      deleteTask: async (taskId) => {
-        try {
-          await storageService.deleteTask(taskId);
-          set(state => ({ tasks: state.tasks.filter(task => task.id !== taskId) }));
-        } catch (error) {
-          console.error('Failed to delete task:', error);
-          throw error;
-        }
-      },
-
-      toggleTask: async (taskId) => {
-        const task = get().tasks.find(t => t.id === taskId);
-        if (task) {
-          await get().updateTask(taskId, { completed: !task.completed });
-        }
-      },
-
-      addSubTask: async (taskId, subtaskData) => {
-        const task = get().tasks.find(t => t.id === taskId);
-        if (!task) return;
-
-        const newSubTask: SubTask = {
-          ...subtaskData,
-          id: Date.now().toString(),
-          createdAt: new Date().toISOString()
-        };
-
-        const updatedSubtasks = [...(task.subtasks || []), newSubTask];
-        await get().updateTask(taskId, { subtasks: updatedSubtasks });
-      },
-
-      toggleSubTask: async (taskId, subtaskId) => {
-        const task = get().tasks.find(t => t.id === taskId);
-        if (!task || !task.subtasks) return;
-
-        const updatedSubtasks = task.subtasks.map(subtask =>
-          subtask.id === subtaskId ? { ...subtask, completed: !subtask.completed } : subtask
-        );
-
-        await get().updateTask(taskId, { subtasks: updatedSubtasks });
-      },
-
-      // Note management
       loadNotes: async () => {
         set({ notesLoading: true });
         try {
-          const notes = await storageService.getNotes();
-          set({ notes, notesLoading: false });
+          const records = await recordService.getRecords();
+          set({ records, notesLoading: false });
         } catch (error) {
           console.error('Failed to load notes:', error);
           set({ notesLoading: false });
         }
       },
 
-      addNote: async (noteData) => {
-        try {
-          const newNote = await storageService.addNote(noteData);
-          set(state => ({ notes: [...state.notes, newNote] }));
-        } catch (error) {
-          console.error('Failed to add note:', error);
-          throw error;
-        }
+      // Computed getters
+      get tasks() {
+        return get().records.filter(record => record.type === 'task') as Task[];
       },
-
-      updateNote: async (noteId, updates) => {
-        try {
-          await storageService.updateNote(noteId, updates);
-          set(state => ({
-            notes: state.notes.map(note =>
-              note.id === noteId ? { ...note, ...updates, updatedAt: new Date().toISOString() } : note
-            )
-          }));
-        } catch (error) {
-          console.error('Failed to update note:', error);
-          throw error;
-        }
+      
+      get notes() {
+        return get().records.filter(record => record.type === 'note') as Note[];
       },
-
-      deleteNote: async (noteId) => {
-        try {
-          await storageService.deleteNote(noteId);
-          set(state => ({ notes: state.notes.filter(note => note.id !== noteId) }));
-        } catch (error) {
-          console.error('Failed to delete note:', error);
-          throw error;
-        }
-      },
-
-      getNotesByUrl: (url) => {
-        return get().notes.filter(note => note.url === url);
+      
+      get bookmarks() {
+        return get().records.filter(record => record.type === 'bookmark');
       },
 
       // UI actions
@@ -281,11 +198,10 @@ export const useAppStore = create<AppState>()(
       setPageContext: (context) => set({ currentPageContext: context })
     }),
     {
-      name: 'manage-app-store',
+      name: 'meraki-app-store',
       partialize: (state) => ({
         preferences: state.preferences,
-        tasks: state.tasks,
-        notes: state.notes
+        records: state.records
       })
     }
   )

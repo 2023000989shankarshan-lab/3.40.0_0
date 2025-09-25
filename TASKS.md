@@ -1,232 +1,364 @@
-# Project Tasks and Roadmap
+# Meraki Development Roadmap & TODO
 
-## Core Features & Implementation Plan
+## 🎯 Project Overview
+Meraki is a hybrid Chrome Extension + Web Dashboard system that helps users capture, organize, and act on information across the web. Inspired by daily.dev's extension-first workflow but enhanced with bookmarking, note-taking, and AI-powered features.
 
-### Phase 1: Foundation Setup
-- [x] Basic Firebase Configuration
-- [x] Authentication Setup
-- [ ] Environment Variables Setup
-- [ ] Connection Testing Implementation
-- [ ] Basic UI Components
+## 🏗 Architecture Overview
 
-### Phase 2: Extension Core Features
-#### AI Integration
-- [ ] Chrome AI API Integration
-  - [ ] Content Analysis
-  - [ ] Smart Suggestions
-  - [ ] Task Prioritization
-  - [ ] Context-aware Task Creation
+### Extension (Meraki Core)
+- **Toolbar Integration**: Icon next to Chrome omnibox
+- **Overlay Panel**: Translucent, non-intrusive content capture
+- **Smart Detection**: Auto-detect YouTube, shopping, booking sites
+- **Task Records Dashboard**: Unified view of all captured content
 
-#### Task Management
-- [ ] Task Creation/Edit/Delete
-- [ ] Smart Task Categories
-- [ ] Task Priority System
-- [ ] Due Date Management
-- [ ] Task Progress Tracking
-- [ ] Task Templates
+### Backend (Firebase)
+- **Authentication**: Google Sign-In
+- **Database**: Firestore for structured data
+- **Storage**: Firebase Storage for attachments
+- **Functions**: Cloud Functions for API endpoints
 
-#### UI/UX Design
-- [ ] Modern, Clean Interface
-- [ ] Dark/Light Mode
-- [ ] Customizable Dashboard
-- [ ] Responsive Layouts
-- [ ] Animations and Transitions
-- [ ] Loading States and Feedback
+### Mobile App (React Native)
+- **Task-First Design**: Productivity-focused companion
+- **Rich Features**: Attachments, reminders, themes
+- **Sync Integration**: Real-time sync with extension
 
-### Phase 3: Mobile App Development
-#### Core Features
-- [ ] Task Monitoring Dashboard
-- [ ] Push Notifications
-- [ ] Quick Task Creation
-- [ ] Progress Visualization
-- [ ] Offline Support
+## 📋 Development Tasks
 
-#### Mobile-Specific Features
-- [ ] Gesture Controls
-- [ ] Widget Support
-- [ ] Biometric Authentication
-- [ ] Camera Integration for Task Attachments
+### Phase 1: Core Infrastructure (Priority 1)
 
-### Phase 4: AI & Advanced Features
-#### AI Features
-- [ ] Smart Task Summarization
-- [ ] Content Analysis
-- [ ] Productivity Insights
-- [ ] Task Recommendations
-- [ ] Time Management Suggestions
-- [ ] Meeting Notes Generation
+#### Extension Development
+- [x] Project structure and build system
+- [x] Manifest v3 configuration
+- [x] Content script injection system
+- [x] Background script message handling
+- [x] Basic overlay panel implementation
+- [ ] **Toolbar icon integration** (next to omnibox)
+- [ ] **Context menu setup** (right-click options)
+- [ ] **Smart site detection** (YouTube, shopping, booking)
+- [ ] **Metadata extraction** (titles, favicons, timestamps)
+- [ ] **Local storage system** (Chrome storage API)
 
-#### Integration Features
-- [ ] Google Calendar Integration
-- [ ] Gmail Integration
-- [ ] Google Drive Integration
-- [ ] Microsoft Teams Integration
-- [ ] Slack Integration
+#### Backend Setup
+- [ ] **Firebase project configuration**
+  - [ ] Authentication setup (Google Sign-In)
+  - [ ] Firestore database structure
+  - [ ] Security rules implementation
+  - [ ] Storage bucket configuration
+- [ ] **Data models implementation**
+  - [ ] User profile schema
+  - [ ] Record schema (notes, bookmarks, tasks)
+  - [ ] Sync status tracking
+- [ ] **API endpoints** (Cloud Functions)
+  - [ ] User management
+  - [ ] Record CRUD operations
+  - [ ] Sync conflict resolution
 
-### Phase 5: Cross-Platform Sync
-- [ ] Real-time Data Sync
-- [ ] Conflict Resolution
-- [ ] Offline Support
-- [ ] Data Backup System
-- [ ] Multi-device Management
+#### Mobile App Foundation
+- [x] React Native project setup with Expo
+- [x] Navigation structure
+- [x] Basic screen components
+- [x] State management with Zustand
+- [ ] **Firebase SDK integration**
+- [ ] **Authentication flow**
+- [ ] **Offline storage** (AsyncStorage)
+- [ ] **Sync service implementation**
 
-## Technical Implementation Details
+### Phase 2: Core Features (Priority 2)
 
-### Frontend Architecture
-```typescript
-// Core Components Structure
+#### Extension Features
+- [ ] **YouTube Integration**
+  - [ ] Video timestamp detection
+  - [ ] Timestamp-based note taking
+  - [ ] Video metadata extraction
+  - [ ] Chapter/segment recognition
+- [ ] **Shopping Site Integration**
+  - [ ] Product information extraction
+  - [ ] Price tracking capabilities
+  - [ ] Wishlist/comparison features
+  - [ ] Deal alert system
+- [ ] **Booking Site Integration**
+  - [ ] Travel itinerary capture
+  - [ ] Hotel/flight comparison
+  - [ ] Booking reminder system
+  - [ ] Price change notifications
+
+#### Mobile App Features
+- [x] Task management interface
+- [x] Task creation with rich features
+- [ ] **Photo attachments** (camera integration)
+- [ ] **Voice notes** (audio recording)
+- [ ] **Location-based reminders**
+- [ ] **Custom themes and backgrounds**
+- [ ] **Notification system**
+- [ ] **Widget support** (iOS/Android)
+
+#### Sync System
+- [ ] **Real-time synchronization**
+  - [ ] Firestore real-time listeners
+  - [ ] Conflict resolution algorithms
+  - [ ] Offline queue management
+  - [ ] Sync status indicators
+- [ ] **Data migration tools**
+- [ ] **Backup and restore functionality**
+
+### Phase 3: Advanced Features (Priority 3)
+
+#### AI Integration (TODO - Placeholder Implementation)
+- [ ] **Content Summarization**
+  - [ ] Chrome AI API integration
+  - [ ] Google Gemini integration
+  - [ ] Page content analysis
+  - [ ] Video transcript summarization
+- [ ] **Smart Tagging**
+  - [ ] Automatic tag generation
+  - [ ] Content categorization
+  - [ ] Duplicate detection
+- [ ] **Task Intelligence**
+  - [ ] Natural language task parsing
+  - [ ] Priority suggestion algorithms
+  - [ ] Deadline prediction
+  - [ ] Smart reminder timing
+- [ ] **Productivity Insights**
+  - [ ] Usage pattern analysis
+  - [ ] Productivity metrics
+  - [ ] Goal tracking
+  - [ ] Habit formation support
+
+#### Collaboration Features
+- [ ] **Shared Collections**
+  - [ ] Team workspaces
+  - [ ] Permission management
+  - [ ] Real-time collaboration
+- [ ] **Social Features**
+  - [ ] Public bookmark collections
+  - [ ] Community recommendations
+  - [ ] Social sharing integration
+
+#### Advanced Mobile Features
+- [ ] **Apple Watch / Wear OS Support**
+- [ ] **Siri Shortcuts / Google Assistant**
+- [ ] **Calendar Integration**
+- [ ] **Email Integration**
+- [ ] **Third-party App Integration**
+
+### Phase 4: Polish & Optimization (Priority 4)
+
+#### Performance Optimization
+- [ ] **Extension Performance**
+  - [ ] Content script optimization
+  - [ ] Memory usage reduction
+  - [ ] Startup time improvement
+- [ ] **Mobile Performance**
+  - [ ] App startup optimization
+  - [ ] Smooth animations
+  - [ ] Battery usage optimization
+- [ ] **Backend Optimization**
+  - [ ] Database query optimization
+  - [ ] CDN implementation
+  - [ ] Caching strategies
+
+#### User Experience
+- [ ] **Onboarding Flow**
+  - [ ] Interactive tutorials
+  - [ ] Feature discovery
+  - [ ] Setup wizards
+- [ ] **Accessibility**
+  - [ ] Screen reader support
+  - [ ] Keyboard navigation
+  - [ ] High contrast themes
+- [ ] **Internationalization**
+  - [ ] Multi-language support
+  - [ ] Localized content
+  - [ ] RTL language support
+
+#### Quality Assurance
+- [ ] **Testing Suite**
+  - [ ] Unit tests (Jest)
+  - [ ] Integration tests
+  - [ ] E2E tests (Playwright)
+  - [ ] Mobile testing (Detox)
+- [ ] **Error Handling**
+  - [ ] Comprehensive error tracking
+  - [ ] User-friendly error messages
+  - [ ] Automatic error reporting
+- [ ] **Security Audit**
+  - [ ] Penetration testing
+  - [ ] Data encryption audit
+  - [ ] Privacy compliance check
+
+## 🛠 Technical Implementation Details
+
+### Extension Architecture
+```
 src/
-├── components/
-│   ├── tasks/
-│   │   ├── TaskList.tsx
-│   │   ├── TaskCard.tsx
-│   │   ├── TaskEditor.tsx
-│   │   └── TaskFilters.tsx
-│   ├── ai/
-│   │   ├── SmartSuggestions.tsx
-│   │   ├── ContentAnalysis.tsx
-│   │   └── AIAssistant.tsx
-│   └── common/
-│       ├── Layout.tsx
-│       ├── Navigation.tsx
-│       └── ThemeToggle.tsx
+├── background/          # Service worker
+├── content/            # Content scripts
+├── components/         # React components
+├── services/          # Business logic
+├── store/             # State management
+└── types/             # TypeScript definitions
 ```
 
-### Backend Services
+### Firebase Schema
 ```typescript
-// Service Layer Structure
-services/
-├── ai/
-│   ├── chromeAI.ts
-│   ├── openAI.ts
-│   └── textAnalysis.ts
-├── sync/
-│   ├── firebaseSync.ts
-│   ├── offlineStorage.ts
-│   └── conflictResolver.ts
-└── integration/
-    ├── googleCalendar.ts
-    ├── gmail.ts
-    └── slack.ts
-```
+// Firestore Collections
+users/{userId}/
+├── profile: UserProfile
+└── records/{recordId}: Record
 
-## Priority Tasks
-
-### Immediate (Next 2 Weeks)
-1. Complete Firebase Setup
-   - [ ] Environment Configuration
-   - [ ] Security Rules
-   - [ ] Authentication Flow Testing
-
-2. Basic UI Implementation
-   - [ ] Dashboard Layout
-   - [ ] Task Management Interface
-   - [ ] Settings Panel
-
-3. Core Extension Features
-   - [ ] Task Creation Flow
-   - [ ] Basic AI Integration
-   - [ ] Data Sync Setup
-
-### Short Term (1 Month)
-1. Advanced Features
-   - [ ] AI Task Analysis
-   - [ ] Smart Categories
-   - [ ] Task Templates
-
-2. Mobile App Foundation
-   - [ ] Basic App Setup
-   - [ ] Core UI Components
-   - [ ] Authentication Integration
-
-### Long Term (3 Months)
-1. Integration Features
-   - [ ] Google Workspace Integration
-   - [ ] Advanced AI Features
-   - [ ] Cross-platform Sync
-
-2. Performance Optimization
-   - [ ] Caching Strategy
-   - [ ] Load Time Optimization
-   - [ ] Memory Management
-
-## Design Guidelines
-
-### UI/UX Principles
-- Modern, minimalistic design
-- Consistent color scheme
-- Intuitive navigation
-- Responsive layouts
-- Smooth animations
-- Clear visual hierarchy
-
-### Color Palette
-```css
-:root {
-  --primary: #2563eb;
-  --secondary: #3b82f6;
-  --accent: #60a5fa;
-  --background: #ffffff;
-  --text: #1f2937;
-  --error: #ef4444;
-  --success: #22c55e;
+// Record Types
+Record {
+  type: 'note' | 'bookmark' | 'task'
+  source: 'youtube' | 'shopping' | 'booking' | 'generic'
+  metadata: { /* source-specific data */ }
+  content: string
+  // ... other fields
 }
 ```
 
-## AI Integration Strategy
+### Mobile App Architecture
+```
+mobile-app/src/
+├── screens/           # Main app screens
+├── components/        # Reusable components
+├── services/          # Business logic
+├── store/             # State management
+├── types/             # TypeScript definitions
+└── utils/             # Helper functions
+```
 
-### Chrome Extension
-1. Content Analysis
-   - Web page summarization
-   - Key point extraction
-   - Task suggestions
+## 🔧 Development Setup
 
-2. Task Enhancement
-   - Priority suggestions
-   - Due date recommendations
-   - Category assignments
+### Prerequisites
+- Node.js 18+
+- Chrome browser
+- Firebase account
+- Expo CLI (for mobile)
+- iOS Simulator / Android Emulator
 
-### Mobile App
-1. Quick Actions
-   - Voice task creation
-   - Image-based tasks
-   - Location-based reminders
+### Quick Start
+```bash
+# Extension development
+npm install
+npm run dev
 
-2. Insights
-   - Productivity patterns
-   - Task completion analysis
-   - Time management suggestions
+# Mobile app development
+cd mobile-app
+npm install
+npm start
 
-## Testing Strategy
+# Firebase setup
+firebase login
+firebase init
+```
 
-### Unit Tests
-- Component testing
-- Service layer testing
-- Utility function testing
+## 📊 Success Metrics
 
-### Integration Tests
-- API integration testing
-- Firebase integration testing
-- Cross-platform sync testing
+### User Engagement
+- Daily active users (DAU)
+- Session duration
+- Feature adoption rates
+- User retention (7-day, 30-day)
 
-### E2E Tests
-- User flow testing
-- Cross-browser testing
-- Mobile app testing
+### Functionality Metrics
+- Sync success rate
+- Error rates
+- Performance benchmarks
+- User satisfaction scores
 
-## Documentation Needs
+### Business Metrics
+- User growth rate
+- Feature usage analytics
+- Support ticket volume
+- App store ratings
 
-1. Technical Documentation
-   - Architecture overview
-   - API documentation
-   - Component documentation
+## 🚀 Deployment Strategy
 
-2. User Documentation
-   - Feature guides
-   - Setup instructions
-   - FAQs
+### Extension Deployment
+1. Chrome Web Store submission
+2. Edge Add-ons store
+3. Firefox Add-ons (future)
 
-3. Developer Documentation
-   - Setup guide
-   - Contribution guidelines
-   - Best practices
+### Mobile App Deployment
+1. iOS App Store
+2. Google Play Store
+3. TestFlight/Internal testing
+
+### Backend Deployment
+1. Firebase hosting
+2. Cloud Functions deployment
+3. Firestore security rules
+4. Monitoring and alerts
+
+## 📝 Documentation Plan
+
+### User Documentation
+- [ ] Getting started guide
+- [ ] Feature tutorials
+- [ ] FAQ and troubleshooting
+- [ ] Video walkthroughs
+
+### Developer Documentation
+- [ ] API documentation
+- [ ] Architecture overview
+- [ ] Contributing guidelines
+- [ ] Deployment procedures
+
+### Technical Documentation
+- [ ] Database schema
+- [ ] Security protocols
+- [ ] Performance guidelines
+- [ ] Testing procedures
+
+## 🔮 Future Considerations
+
+### Scalability
+- Microservices architecture
+- Database sharding
+- CDN implementation
+- Load balancing
+
+### Platform Expansion
+- Safari extension
+- Desktop applications
+- Web dashboard
+- API for third-party integrations
+
+### Advanced AI Features
+- Custom AI model training
+- Personalized recommendations
+- Predictive analytics
+- Natural language processing
+
+---
+
+## 📅 Timeline Estimates
+
+- **Phase 1** (Core Infrastructure): 4-6 weeks
+- **Phase 2** (Core Features): 6-8 weeks
+- **Phase 3** (Advanced Features): 8-10 weeks
+- **Phase 4** (Polish & Optimization): 4-6 weeks
+
+**Total Estimated Timeline**: 22-30 weeks (5.5-7.5 months)
+
+## 👥 Team Recommendations
+
+### Roles Needed
+- Frontend Developer (Extension + React)
+- Mobile Developer (React Native)
+- Backend Developer (Firebase/Node.js)
+- UI/UX Designer
+- QA Engineer
+- DevOps Engineer (part-time)
+
+### Skills Required
+- TypeScript/JavaScript
+- React/React Native
+- Chrome Extension APIs
+- Firebase/Firestore
+- Mobile development (iOS/Android)
+- AI/ML integration (future)
+
+---
+
+*This roadmap is a living document and will be updated as the project evolves.*
